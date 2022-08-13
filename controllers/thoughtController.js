@@ -19,7 +19,17 @@ module.exports = {
 
     createThought(req, res) {
         Thought.create(req.body)
-            .then((thought) => res.json(thought))
+            .then(({ _id }) => User.findOneAndUpdate(
+                { username: req.body.username },
+                { $addToSet: { thoughts: _id } },
+                { new: true }
+            )
+            )
+            .then((user) =>
+                !user
+                    ? res.status(400).json({ message: 'No user found with this ID' })
+                    : res.json(user)
+            )
             .catch((err) => res.json(err))
     },
 
