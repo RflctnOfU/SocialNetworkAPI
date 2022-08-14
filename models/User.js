@@ -24,6 +24,9 @@ const userSchema = new Schema(
             virtuals: true
         },
     },
+    {
+        timestamps: true,
+    },
 )
 
 userSchema.virtual('friendCount').get(function () {
